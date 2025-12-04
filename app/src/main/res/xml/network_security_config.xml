@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow user-installed certificates (e.g., Charles Proxy) for debugging -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- Trust preinstalled CAs -->
+            <certificates src="system" />
+            <!-- Trust user-installed CAs (for Charles Proxy debugging) -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- Specific domain configuration (optional, for production) -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">jira.flashcat.cloud</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

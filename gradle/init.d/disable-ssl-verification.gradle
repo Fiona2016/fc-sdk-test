@@ -1,0 +1,40 @@
+// Gradle init script to disable SSL certificate verification
+// WARNING: This is for development only. Do NOT use in production!
+// This script disables SSL certificate validation to work around proxy/SSL issues
+// Compatible with Gradle 8.13 and proxy environments (e.g., Charles Proxy)
+
+import javax.net.ssl.*
+import java.security.cert.X509Certificate
+
+// Enable system proxy detection
+System.setProperty("java.net.useSystemProxies", "true")
+
+// Create a trust manager that accepts all certificates
+def trustAllCerts = [
+    new X509TrustManager() {
+        X509Certificate[] getAcceptedIssuers() { return null }
+        void checkClientTrusted(X509Certificate[] certs, String authType) { }
+        void checkServerTrusted(X509Certificate[] certs, String authType) { }
+    }
+] as X509TrustManager[]
+
+// Create SSL context that trusts all certificates
+// Use TLS instead of SSL for better compatibility
+def sslContext = SSLContext.getInstance("TLS")
+sslContext.init(null, trustAllCerts, new java.security.SecureRandom())
+
+// Set as default SSL socket factory for HttpsURLConnection
+HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.socketFactory)
+
+// Set hostname verifier that accepts all hostnames
+HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+    boolean verify(String hostname, SSLSession session) {
+        return true
+    }
+})
+
+// Also set for default SSL context (for other HTTP clients)
+SSLContext.setDefault(sslContext)
+
+println "✓ SSL certificate verification disabled (development mode only)"
+println "✓ System proxy detection enabled"
