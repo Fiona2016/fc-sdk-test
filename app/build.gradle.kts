@@ -1,6 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("cloud.flashcat.android-gradle-plugin") version "1.0.0-SNAPSHOT"
+}
+
+flashcat {
+    site = "STAGING"
+    versionName = "1.0.0"
+    serviceName = "test-app"
 }
 
 android {
@@ -19,11 +26,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isMinifyEnabled = false
         }
     }
     compileOptions {
