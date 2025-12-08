@@ -12,6 +12,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fc_sdk_test.databinding.FragmentReflowBinding
+import cloud.flashcat.android.rum.GlobalRumMonitor
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.net.HttpURLConnection
 import java.net.InetSocketAddress
 import java.net.Proxy
@@ -70,6 +73,11 @@ class ReflowFragment : Fragment() {
         // Set up check proxy button click listener
         binding.btnCheckProxy.setOnClickListener {
             checkProxyStatus()
+        }
+
+        // Set up report error button click listener
+        binding.btnReportError.setOnClickListener {
+            reportErrorToFlashCat()
         }
 
         return root
@@ -347,6 +355,60 @@ class ReflowFragment : Fragment() {
                 }
             }
         }.start()
+    }
+
+    private fun reportErrorToFlashCat() {
+        try {
+            // Create a custom error with stack trace
+            val errorMessage = "Test error from ReflowFragment - Report Error button clicked"
+            val exception = RuntimeException(errorMessage).apply {
+                // Fill in stack trace
+                fillInStackTrace()
+            }
+            
+            // Get stack trace as string
+            val stackTrace = StringWriter().apply {
+                exception.printStackTrace(PrintWriter(this))
+            }.toString()
+            
+            Log.d(TAG, "========== Reporting Error to FlashCat ==========")
+            Log.d(TAG, "Error Message: $errorMessage")
+            Log.d(TAG, "Stack Trace:\n$stackTrace")
+            
+            // Report error to FlashCat RUM with stack trace information
+            GlobalRumMonitor.get().addError(
+                message = errorMessage,
+                throwable = exception,
+                source = cloud.flashcat.android.rum.RumErrorSource.SOURCE,
+                attributes = mapOf(
+                    "error_type" to "manual_test_error",
+                    "fragment" to "ReflowFragment",
+                    "button" to "btn_report_error",
+                    "stack_trace" to stackTrace,
+                    "timestamp" to System.currentTimeMillis().toString()
+                )
+            )
+            
+            Log.d(TAG, "✓ Error reported to FlashCat RUM successfully")
+            Log.d(TAG, "================================================")
+            
+            handler.post {
+                Toast.makeText(
+                    context,
+                    "Error reported to FlashCat RUM\nCheck Logcat for details",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to report error to FlashCat RUM", e)
+            handler.post {
+                Toast.makeText(
+                    context,
+                    "Failed to report error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 
     override fun onDestroyView() {

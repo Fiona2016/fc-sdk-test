@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("cloud.flashcat.android-gradle-plugin") version "1.0.0-SNAPSHOT"
+    id("cloud.flashcat.android-gradle-plugin") version "1.0.0"
 }
 
 flashcat {
@@ -24,9 +24,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        // Use debug keystore for testing R8 minified builds
+        create("release") {
+            val debugKeystorePath = "${System.getProperty("user.home")}/.android/debug.keystore"
+            storeFile = file(debugKeystorePath)
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
