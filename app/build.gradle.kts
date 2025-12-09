@@ -6,8 +6,8 @@ plugins {
 
 flashcat {
     site = "STAGING"
-    versionName = "1.0.0"
-    serviceName = "test-app"
+    serviceName = "com.example.fc_sdk_test"
+    versionName = "1.0.2"
 }
 
 android {
@@ -19,7 +19,7 @@ android {
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -70,11 +70,15 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    
+
+    implementation ("cloud.flashcat:fc-sdk-android-core:0.1.0")
+    implementation ("cloud.flashcat:fc-sdk-android-logs:0.1.0")
+    implementation ("cloud.flashcat:fc-sdk-android-rum:0.1.0")
+
     // FlashCat SDK
-    implementation(libs.flashcat.sdk.core)
-    implementation(libs.flashcat.sdk.logs)
-    implementation(libs.flashcat.sdk.rum)
+//    implementation(libs.flashcat.sdk.core)
+//    implementation(libs.flashcat.sdk.logs)
+//    implementation(libs.flashcat.sdk.rum)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

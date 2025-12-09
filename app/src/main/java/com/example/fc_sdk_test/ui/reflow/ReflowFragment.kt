@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fc_sdk_test.databinding.FragmentReflowBinding
+import com.example.fc_sdk_test.util.ObfuscationTestHelper
 import cloud.flashcat.android.rum.GlobalRumMonitor
+import cloud.flashcat.android.rum.RumErrorSource
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.net.HttpURLConnection
@@ -78,6 +80,11 @@ class ReflowFragment : Fragment() {
         // Set up report error button click listener
         binding.btnReportError.setOnClickListener {
             reportErrorToFlashCat()
+        }
+
+        // Set up obfuscation test button click listener
+        binding.btnTestObfuscation.setOnClickListener {
+            testObfuscation()
         }
 
         return root
@@ -405,6 +412,61 @@ class ReflowFragment : Fragment() {
                 Toast.makeText(
                     context,
                     "Failed to report error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    /**
+     * Test method to verify obfuscation and deobfuscation.
+     * This method calls ObfuscationTestHelper which has 2-3 layer call stack.
+     */
+    private fun testObfuscation() {
+        try {
+            Log.d(TAG, "========== Obfuscation Test ==========")
+            
+            val helper = ObfuscationTestHelper()
+            
+            // Test 1: Call method with 2-3 layer call stack that throws exception
+            Log.d(TAG, "Test 1: Testing deep stack trace (4 levels)")
+            val exception = helper.createDeepStackTrace()
+            throw exception
+            
+        } catch (e: Exception) {
+            // Log the obfuscated stack trace
+            Log.d(TAG, "Obfuscated stack trace:")
+            e.printStackTrace()
+            
+            // Get stack trace as string for logging
+            val stackTrace = StringWriter().apply {
+                e.printStackTrace(PrintWriter(this))
+            }.toString()
+            
+            Log.d(TAG, "Full stack trace:\n$stackTrace")
+            
+            // Report to Datadog - this should be deobfuscated on the backend
+            GlobalRumMonitor.get().addError(
+                message = "Obfuscation test error - multi-layer call stack",
+                source = RumErrorSource.SOURCE,
+                throwable = e,
+                attributes = mapOf(
+                    "test_type" to "obfuscation_test",
+                    "fragment" to "ReflowFragment",
+                    "button" to "btn_test_obfuscation",
+                    "stack_trace" to stackTrace,
+                    "timestamp" to System.currentTimeMillis().toString()
+                )
+            )
+            
+            Log.d(TAG, "✓ Obfuscation test error reported to Datadog")
+            Log.d(TAG, "Check Datadog console to see if stack trace is deobfuscated")
+            Log.d(TAG, "==========================================")
+            
+            handler.post {
+                Toast.makeText(
+                    context,
+                    "Obfuscation test completed\nCheck Logcat and Datadog console",
                     Toast.LENGTH_LONG
                 ).show()
             }

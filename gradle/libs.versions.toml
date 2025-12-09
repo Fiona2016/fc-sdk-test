@@ -28,9 +28,9 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-flashcat-sdk-core = { group = "cloud.flashcat", name = "fc-sdk-android-core", version.ref = "flashcatSdk" }
-flashcat-sdk-logs = { group = "cloud.flashcat", name = "fc-sdk-android-logs", version.ref = "flashcatSdk" }
-flashcat-sdk-rum = { group = "cloud.flashcat", name = "fc-sdk-android-rum", version.ref = "flashcatSdk" }
+#flashcat-sdk-core = { group = "cloud.flashcat", name = "fc-sdk-android-core", version.ref = "flashcatSdk" }
+#flashcat-sdk-logs = { group = "cloud.flashcat", name = "fc-sdk-android-logs", version.ref = "flashcatSdk" }
+#flashcat-sdk-rum = { group = "cloud.flashcat", name = "fc-sdk-android-rum", version.ref = "flashcatSdk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

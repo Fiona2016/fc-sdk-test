@@ -26,7 +26,7 @@ class FcSdkTestApplication : Application() {
             env = "dev",
             variant = "test"
         )
-            .useSite(FlashcatSite.STAGING)  // Endpoint already points to FlashCat backend
+//            .useSite(FlashcatSite.STAGING)  // Endpoint already points to FlashCat backend
             .build()
 
         Flashcat.initialize(
@@ -39,7 +39,10 @@ class FcSdkTestApplication : Application() {
 
         Rum.enable(
             RumConfiguration
-                .Builder("Fzr9QakpXPJHWwSRxt5CLS").build()
+                .Builder("Fzr9QakpXPJHWwSRxt5CLS")
+                .trackUserInteractions()
+                .trackLongTasks()
+                .build()
         )
         GlobalRumMonitor.get().debug = true
 
