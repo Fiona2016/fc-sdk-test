@@ -22,7 +22,7 @@ class FcSdkTestApplication : Application() {
         Flashcat.setVerbosity(Log.VERBOSE)
         
         val configuration = Configuration.Builder(
-            clientToken = "156b22631d5359deae51668d3c54da69131",  // Replace with your actual client token
+            clientToken = "56e4fcdf78f852a98d64e34c6e52b34b973",  // Replace with your actual client token
             env = "dev",
             variant = "test"
         )
@@ -39,13 +39,12 @@ class FcSdkTestApplication : Application() {
 
         Rum.enable(
             RumConfiguration
-                .Builder("Fzr9QakpXPJHWwSRxt5CLS")
+                .Builder("5fzsC7iPcMwcr2oU6UZeB5")
                 .trackUserInteractions()
                 .trackLongTasks()
                 .build()
         )
         GlobalRumMonitor.get().debug = true
-
     }
 }
 

@@ -1,13 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("cloud.flashcat.android-gradle-plugin") version "1.0.0"
+    id("cloud.flashcat.android-gradle-plugin") version "1.1.0"
 }
 
 flashcat {
-    site = "STAGING"
+    site = "CN"
     serviceName = "com.example.fc_sdk_test"
-    versionName = "1.0.2"
+    versionName = "1.1.0"
 }
 
 android {

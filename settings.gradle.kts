@@ -1,5 +1,6 @@
 pluginManagement {
     repositories {
+        // mavenLocal()  // ✅ 必须在最前面 本地测试
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
