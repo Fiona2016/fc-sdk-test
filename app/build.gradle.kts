@@ -74,6 +74,7 @@ dependencies {
     implementation ("cloud.flashcat:fc-sdk-android-core:0.1.0")
     implementation ("cloud.flashcat:fc-sdk-android-logs:0.1.0")
     implementation ("cloud.flashcat:fc-sdk-android-rum:0.1.0")
+    implementation ("cloud.flashcat:fc-sdk-android-webview:0.1.0")
 
     // FlashCat SDK
 //    implementation(libs.flashcat.sdk.core)
