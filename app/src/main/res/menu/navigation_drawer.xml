@@ -21,6 +21,26 @@
             android:icon="@drawable/ic_webview_black_24dp"
             android:title="@string/menu_webview" />
         <item
+            android:id="@+id/nav_actions"
+            android:icon="@drawable/ic_gallery_black_24dp"
+            android:title="@string/menu_actions" />
+        <item
+            android:id="@+id/nav_errors"
+            android:icon="@drawable/ic_gallery_black_24dp"
+            android:title="@string/menu_errors" />
+        <item
+            android:id="@+id/nav_resources"
+            android:icon="@drawable/ic_slideshow_black_24dp"
+            android:title="@string/menu_resources" />
+        <item
+            android:id="@+id/nav_context"
+            android:icon="@drawable/ic_camera_black_24dp"
+            android:title="@string/menu_context" />
+        <item
+            android:id="@+id/nav_vitals"
+            android:icon="@drawable/ic_slideshow_black_24dp"
+            android:title="@string/menu_vitals" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/menu_settings" />

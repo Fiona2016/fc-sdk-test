@@ -11,10 +11,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.fc_sdk_test.NativeCrash
 import com.example.fc_sdk_test.databinding.FragmentReflowBinding
 import com.example.fc_sdk_test.util.ObfuscationTestHelper
-import cloud.flashcat.android.rum.GlobalRumMonitor
-import cloud.flashcat.android.rum.RumErrorSource
+import com.datadog.android.rum.GlobalRumMonitor
+import com.datadog.android.rum.RumErrorSource
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.net.HttpURLConnection
@@ -85,6 +86,22 @@ class ReflowFragment : Fragment() {
         // Set up obfuscation test button click listener
         binding.btnTestObfuscation.setOnClickListener {
             testObfuscation()
+        }
+
+        // Set up NDK (native) crash buttons. Each triggers a real native crash
+        // through a distinctly-named C++ function so issue grouping can be tested.
+        // The crash kills the process; the report is uploaded on the NEXT launch.
+        binding.btnNdkSegvNull.setOnClickListener {
+            NativeCrash.simulateNdkCrash(NativeCrash.SCENARIO_NULL_DEREF)
+        }
+        binding.btnNdkSegvWild.setOnClickListener {
+            NativeCrash.simulateNdkCrash(NativeCrash.SCENARIO_WILD_POINTER)
+        }
+        binding.btnNdkNested.setOnClickListener {
+            NativeCrash.simulateNdkCrash(NativeCrash.SCENARIO_NESTED)
+        }
+        binding.btnNdkAbort.setOnClickListener {
+            NativeCrash.simulateNdkCrash(NativeCrash.SCENARIO_ABORT)
         }
 
         return root
@@ -386,7 +403,7 @@ class ReflowFragment : Fragment() {
             GlobalRumMonitor.get().addError(
                 message = errorMessage,
                 throwable = exception,
-                source = cloud.flashcat.android.rum.RumErrorSource.SOURCE,
+                source = RumErrorSource.SOURCE,
                 attributes = mapOf(
                     "error_type" to "manual_test_error",
                     "fragment" to "ReflowFragment",

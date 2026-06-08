@@ -3,15 +3,19 @@ package com.example.fc_sdk_test
 import android.app.Application
 import android.util.Log
 
-import cloud.flashcat.android.Flashcat
-import cloud.flashcat.android.FlashcatSite
-import cloud.flashcat.android.core.configuration.Configuration
-import cloud.flashcat.android.privacy.TrackingConsent
+import com.datadog.android.Datadog
+import com.datadog.android.FlashcatSite
+import com.datadog.android.core.configuration.Configuration
+import com.datadog.android.privacy.TrackingConsent
 
+import com.datadog.android.ndk.NdkCrashReports
 
-import cloud.flashcat.android.rum.GlobalRumMonitor
-import cloud.flashcat.android.rum.Rum
-import cloud.flashcat.android.rum.RumConfiguration
+import com.datadog.android.rum.GlobalRumMonitor
+import com.datadog.android.rum.Rum
+import com.datadog.android.rum.RumConfiguration
+
+import com.datadog.android.trace.Trace
+import com.datadog.android.trace.TraceConfiguration
 
 
 class FcSdkTestApplication : Application() {
@@ -19,32 +23,45 @@ class FcSdkTestApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Flashcat.setVerbosity(Log.VERBOSE)
+        Datadog.setVerbosity(Log.VERBOSE)
         
         val configuration = Configuration.Builder(
-            clientToken = "56e4fcdf78f852a98d64e34c6e52b34b973",  // Replace with your actual client token
+            clientToken = "55dfd4ca9cf75beda92ad63b4c1d6c68131",
             env = "dev",
             variant = "test"
         )
-//            .useSite(FlashcatSite.STAGING)  // Endpoint already points to FlashCat backend
+            // Route to the dev fc-rum (jira.flashcat.cloud)
+            .useSite(FlashcatSite.STAGING)
             .build()
 
-        Flashcat.initialize(
+        Datadog.initialize(
             this,
             configuration,
             TrackingConsent.GRANTED
         )
 
+        // Install the native (NDK) signal handler so native crashes are captured
+        // and reported as RUM errors on the next app launch.
+        NdkCrashReports.enable()
 
+        // Enable Trace feature (required for network tracing)
+        Trace.enable(
+            TraceConfiguration.Builder()
+                .build()
+        )
 
+        // Enable RUM feature
         Rum.enable(
             RumConfiguration
-                .Builder("5fzsC7iPcMwcr2oU6UZeB5")
+                .Builder("AtQmjhr99iABTZywhsgV9b")
                 .trackUserInteractions()
                 .trackLongTasks()
+                .trackNonFatalAnrs(true)
                 .build()
         )
         GlobalRumMonitor.get().debug = true
+        
+        Log.d("FcSdkTestApp", "Flashcat SDK initialized with Trace and RUM features")
     }
 }
 

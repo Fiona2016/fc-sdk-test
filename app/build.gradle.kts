@@ -58,6 +58,14 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    // Native (NDK) crash test library — see src/main/cpp.
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
 }
 
 dependencies {
@@ -71,10 +79,21 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    implementation ("cloud.flashcat:fc-sdk-android-core:0.1.0")
-    implementation ("cloud.flashcat:fc-sdk-android-logs:0.1.0")
-    implementation ("cloud.flashcat:fc-sdk-android-rum:0.1.0")
-    implementation ("cloud.flashcat:fc-sdk-android-webview:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-core:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-logs:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-rum:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-trace:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-webview:0.1.0")
+    // implementation ("cloud.flashcat:fc-sdk-android-okhttp:0.1.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.8.9")
+
+    implementation ("cloud.flashcat:dd-sdk-android-core:0.4.0")
+    implementation ("cloud.flashcat:dd-sdk-android-rum:0.4.0")
+    implementation ("cloud.flashcat:dd-sdk-android-trace:0.4.0")
+    implementation ("cloud.flashcat:dd-sdk-android-webview:0.4.0")
+    implementation ("cloud.flashcat:dd-sdk-android-okhttp:0.4.0")
+    implementation ("cloud.flashcat:dd-sdk-android-ndk:0.4.0")
 
     // FlashCat SDK
 //    implementation(libs.flashcat.sdk.core)

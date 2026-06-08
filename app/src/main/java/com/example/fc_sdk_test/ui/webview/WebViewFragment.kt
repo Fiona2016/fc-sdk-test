@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.fc_sdk_test.databinding.FragmentWebviewBinding
 import android.util.Log
-import cloud.flashcat.android.webview.WebViewTracking
+import com.datadog.android.webview.WebViewTracking
 
 class WebViewFragment : Fragment() {
 
