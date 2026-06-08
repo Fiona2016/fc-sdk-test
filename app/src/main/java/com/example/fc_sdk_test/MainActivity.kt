@@ -10,13 +10,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fc_sdk_test.databinding.ActivityMainBinding
-import cloud.flashcat.android.log.Logger
-import cloud.flashcat.android.rum.GlobalRumMonitor
-import cloud.flashcat.android.rum.RumActionType
+import com.datadog.android.rum.GlobalRumMonitor
+import com.datadog.android.rum.RumActionType
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,23 +26,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var logger: Logger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         Log.d(TAG, "=== MainActivity onCreate ===")
-        
-        // Create Logger after SDK initialization (in Application.onCreate)
-        logger = Logger.Builder()
-            .setNetworkInfoEnabled(true)
-            .setLogcatLogsEnabled(true)
-            .setName("MainActivity")
-            .build()
-        
-        // Test FlashCat SDK logging
-        logger.i("MainActivity onCreate - FlashCat SDK initialized")
-        Log.d(TAG, "Logger 已创建并记录日志")
         
         try {
             val rumMonitor = GlobalRumMonitor.get()
@@ -65,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.fab?.setOnClickListener { view ->
             // Log FAB click event
             Log.d(TAG, "FAB 按钮被点击")
-            logger.i("FAB clicked")
             
             try {
                 GlobalRumMonitor.get().addAction(
@@ -90,7 +77,9 @@ class MainActivity : AppCompatActivity() {
         binding.navView?.let {
             appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_webview, R.id.nav_settings
+                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_webview,
+                    R.id.nav_actions, R.id.nav_errors, R.id.nav_resources, R.id.nav_context,
+                    R.id.nav_vitals, R.id.nav_settings
                 ),
                 binding.drawerLayout
             )
@@ -101,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.contentMain.bottomNavView?.let {
             appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.nav_transform, R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_webview
+                    R.id.nav_reflow, R.id.nav_slideshow, R.id.nav_webview
                 )
             )
             setupActionBarWithNavController(navController, appBarConfiguration)
@@ -123,13 +112,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_settings -> {
-                val navController = findNavController(R.id.nav_host_fragment_content_main)
-                navController.navigate(R.id.nav_settings)
-            }
-        }
-        return super.onOptionsItemSelected(item)
+        // Overflow items share their ids with nav graph destinations, so let NavigationUI route them.
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
     override fun onSupportNavigateUp(): Boolean {

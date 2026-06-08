@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_transform">
+    app:startDestination="@+id/nav_reflow">
 
     <fragment
         android:id="@+id/nav_transform"
@@ -30,8 +30,44 @@
         tools:layout="@layout/fragment_webview" />
 
     <fragment
+        android:id="@+id/nav_actions"
+        android:name="com.example.fc_sdk_test.ui.actions.ActionsFragment"
+        android:label="@string/menu_actions"
+        tools:layout="@layout/fragment_rum_demo" />
+
+    <fragment
+        android:id="@+id/nav_errors"
+        android:name="com.example.fc_sdk_test.ui.errors.ErrorsFragment"
+        android:label="@string/menu_errors"
+        tools:layout="@layout/fragment_rum_demo" />
+
+    <fragment
+        android:id="@+id/nav_resources"
+        android:name="com.example.fc_sdk_test.ui.resources.ResourcesFragment"
+        android:label="@string/menu_resources"
+        tools:layout="@layout/fragment_rum_demo" />
+
+    <fragment
+        android:id="@+id/nav_context"
+        android:name="com.example.fc_sdk_test.ui.context.ContextFragment"
+        android:label="@string/menu_context"
+        tools:layout="@layout/fragment_rum_demo" />
+
+    <fragment
+        android:id="@+id/nav_vitals"
+        android:name="com.example.fc_sdk_test.ui.vitals.VitalsFragment"
+        android:label="@string/menu_vitals"
+        tools:layout="@layout/fragment_rum_demo" />
+
+    <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.fc_sdk_test.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_custom_correlation"
+        android:name="com.example.fc_sdk_test.ui.correlation.CustomCorrelationFragment"
+        android:label="@string/menu_custom_correlation"
+        tools:layout="@layout/fragment_rum_demo" />
 </navigation>

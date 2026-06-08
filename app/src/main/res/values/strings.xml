@@ -9,9 +9,15 @@
 
     <string name="menu_transform">Transform</string>
     <string name="menu_reflow">Reflow</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_slideshow">Network Trace</string>
     <string name="menu_webview">WebView</string>
+    <string name="menu_actions">Actions &amp; Events</string>
+    <string name="menu_errors">Errors</string>
+    <string name="menu_resources">Resources</string>
+    <string name="menu_context">User &amp; Context</string>
+    <string name="menu_vitals">Vitals / Perf</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_custom_correlation">自定义串联</string>
 
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
